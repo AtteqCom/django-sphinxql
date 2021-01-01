@@ -1,25 +1,19 @@
 language: python
 python:
-  - "3.4"
+  - "3.6"
 
 env:
-  - DJANGO_VERSION=1.8 BACKEND=mysql SPHINX_VERSION=2.2.10
-  - DJANGO_VERSION=1.8 BACKEND=mysql SPHINX_VERSION=2.2.11
-  - DJANGO_VERSION=1.8 BACKEND=psycopg2 SPHINX_VERSION=2.2.10
-  - DJANGO_VERSION=1.8 BACKEND=psycopg2 SPHINX_VERSION=2.2.11
-  - DJANGO_VERSION=1.10 BACKEND=mysql SPHINX_VERSION=2.2.10
-  - DJANGO_VERSION=1.10 BACKEND=mysql SPHINX_VERSION=2.2.11
-  - DJANGO_VERSION=1.10 BACKEND=psycopg2 SPHINX_VERSION=2.2.10
-  - DJANGO_VERSION=1.10 BACKEND=psycopg2 SPHINX_VERSION=2.2.11
-  - DJANGO_VERSION=1.11 BACKEND=mysql SPHINX_VERSION=2.2.10
-  - DJANGO_VERSION=1.11 BACKEND=mysql SPHINX_VERSION=2.2.11
-  - DJANGO_VERSION=1.11 BACKEND=psycopg2 SPHINX_VERSION=2.2.10
-  - DJANGO_VERSION=1.11 BACKEND=psycopg2 SPHINX_VERSION=2.2.11
+  - DJANGO_VERSION=1.8.19 BACKEND=mysql SPHINX_VERSION=2.2.11
+  - DJANGO_VERSION=2.2.17 BACKEND=mysql SPHINX_VERSION=2.2.11
+  - DJANGO_VERSION=3.1.4 BACKEND=mysql SPHINX_VERSION=2.2.10
+  - DJANGO_VERSION=3.1.4 BACKEND=mysql SPHINX_VERSION=2.2.11
+  - DJANGO_VERSION=3.1.4 BACKEND=psycopg2 SPHINX_VERSION=2.2.10
+  - DJANGO_VERSION=3.1.4 BACKEND=psycopg2 SPHINX_VERSION=2.2.11
 
 install:
   - sudo bash -c "$(curl -fsSL https://gist.githubusercontent.com/jorgecarleitao/ee5cede492dbe41be8a5/raw/install_sphinx.sh)" ${SPHINX_VERSION}
   - pip install .
-  - pip install PyMySQL psycopg2
+  - pip install mysqlclient psycopg2
   - pip install django==$DJANGO_VERSION
   - pip install coveralls
   - pip install typing
@@ -30,7 +24,15 @@ before_script:
   - mysql -e 'CREATE DATABASE sphinx_example;'
   - psql -c 'create database sphinx_example;' -U postgres
 
+services:
+  - mysql
+  - postgresql
+
 script:
   - PYTHONPATH=$PYTHONPATH:`pwd` coverage run `which django-admin.py` test --settings=tests.settings_travis tests
 
 after_success: coveralls
+
+after_fail:
+  - cat test_sphinx/sphinx.conf || echo "No sphinx.conf found :'(."
+  - cat test_sphinx/searchd.log || echo "No sphinx log found!"

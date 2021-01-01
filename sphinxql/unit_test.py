@@ -62,7 +62,7 @@ class Searchd:
             except:
                 sleep(5)  # Wait until the server stops and releases all the locks
                 shutil.rmtree(settings.INDEXES['path'])
-        os.mkdir(settings.INDEXES['path'])
+        os.makedirs(settings.INDEXES['path'], exist_ok=True)
 
 
 class SphinxQLTestCaseMixin:

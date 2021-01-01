@@ -1,4 +1,5 @@
-from django.db.models import F, CharField, Value
+from django.db.models import F, CharField
+from django.db.models.expressions import RawSQL
 from django.db.models.functions import Concat
 from sphinxql import indexes, fields
 
@@ -11,7 +12,8 @@ class DocumentIndex(indexes.Index):
     main_type_name = fields.IndexedString(model_attr='type__type__name')
     main_type_name1 = fields.IndexedString(model_attr=F('type__type__name'))
     type_name2 = fields.IndexedString(model_attr=Concat('type__type__name',
-                                                        Value(" "), 'type__name',
+                                                        RawSQL("' '", ()),
+                                                        'type__name',
                                                         output_field=CharField()))
     date = fields.Date(model_attr='type__date')
 
@@ -20,7 +22,8 @@ class DocumentIndex(indexes.Index):
 
 
 class DocumentIndex1(indexes.Index):
-    type_name2 = fields.IndexedString(model_attr=Concat('text', Value(" "),
+    type_name2 = fields.IndexedString(model_attr=Concat('text',
+                                                        RawSQL("' '", ()),
                                                         'text',
                                                         output_field=CharField()))
 
@@ -29,7 +32,8 @@ class DocumentIndex1(indexes.Index):
 
 
 class DocumentIndex2(indexes.Index):
-    name = fields.IndexedString(Concat(F('type__name'), Value(' '),
+    name = fields.IndexedString(Concat(F('type__name'),
+                                       RawSQL("' '", ()),
                                        output_field=CharField()))
     text = fields.IndexedString('text')
 

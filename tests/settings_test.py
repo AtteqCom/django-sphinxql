@@ -5,9 +5,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'sphinx_example',
-        'TEST_NAME': 'sphinx_example_test',
-        'USER': 'sphinx_example',
-        'PASSWORD': 'test'
+        'USER': 'postgres',
     },
 }
 # for testing mysql
@@ -15,10 +13,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'sphinx_example',
-        'TEST': {
-            'NAME': 'test_sphinx_example',
-        },
-        'USER': 'root',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'USER': 'root_test',
+        'PASSWORD': 'root_test'
     },
 }
 

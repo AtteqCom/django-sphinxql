@@ -5,7 +5,6 @@ if os.environ['BACKEND'] == 'mysql':
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'sphinx_example',
-            'TEST_NAME': 'sphinx_example_test',
             'USER': 'root',
             },
         }
@@ -14,7 +13,6 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'sphinx_example',
-            'TEST_NAME': 'sphinx_example_test',
             'USER': 'postgres'
             },
         }

@@ -1,0 +1,12 @@
+{
+    "name": "django-sphinxql",
+    "dockerFile": "../Dockerfile",
+    "workspaceFolder": "/django-sphinxql",
+    "extensions": [
+        "ms-python.python"
+    ],
+    "remoteUser": "user",
+    "mounts": [
+        "source=${localWorkspaceFolder},target=/django-sphinxql,type=bind"
+    ]
+}

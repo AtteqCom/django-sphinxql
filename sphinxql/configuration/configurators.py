@@ -55,7 +55,7 @@ DEFAULT_SEARCHD_PARAMS = {'listen': '9306:mysql41',
                           }
 
 DEFAULT_CONNECTION_PARAMS = {'port': '9306',
-                             'host': 'localhost'}
+                             'host': '127.0.0.1'}
 
 DEFAULT_INDEX_PARAMS = {'type': 'plain'}
 
