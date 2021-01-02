@@ -68,7 +68,17 @@ def _pymysql_mogrify(cursor, query, args=None):
     conn = cursor._get_db()
 
     if args is not None:
-        query = query % cursor._escape_args(args, conn)
+        if hasattr(conn, 'literal'):
+            def mogrify_single(x):
+                if isinstance(x, str):
+                    return f"'{x}'"
+                else:
+                    return conn.literal(x)
+            args = tuple(map(mogrify_single, args))
+        else:
+            args = cursor._escape_args(args, conn)
+
+        query = query % args
 
     return query
 
